@@ -11,8 +11,7 @@ namespace Daveslist.Models
         [StringLength(5000, ErrorMessage = "The {0} value cannot exceed {1} characters.")]
         public string Content { get; set; }
 
-        //[Required]
-        //public int CategorId { get; set; }
+        public int CategoryId { get; set; }
 
         public bool IsPublic { get; set; }
 

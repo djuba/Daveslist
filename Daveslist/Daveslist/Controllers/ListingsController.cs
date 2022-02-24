@@ -12,12 +12,12 @@ namespace Daveslist.Controllers
     public class ListingsController : ControllerBase
     {
         private IListingService _listingService;
-        private IUserService _userService;
+        private ICategoryService _categoryService;
 
-        public ListingsController(IListingService listingService,IUserService userService)
+        public ListingsController(IListingService listingService, ICategoryService categoryService)
         {
             _listingService = listingService;
-            _userService = userService;
+            _categoryService = categoryService;
         }
 
         [Authorize(Roles.Admin, Roles.RegisteredUser)]
@@ -28,7 +28,9 @@ namespace Daveslist.Controllers
             if (user == null)
                 return BadRequest(new { message = "User was not logged in" });
 
-            var response = _listingService.PostListing(model, user);
+            var category = _categoryService.GetById(model?.CategoryId ?? 0);
+
+            var response = _listingService.PostListing(model, category, user);
 
             if (response == null)
                 return BadRequest(new { message = "Listing could not be created, see response for details" });

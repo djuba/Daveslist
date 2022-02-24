@@ -14,7 +14,7 @@ namespace Daveslist.Services
 {
     public interface IListingService
     {
-        ListingResponse PostListing(ListingRequest model, User user);
+        ListingResponse PostListing(ListingRequest model, Category category, User user);
         ListingResponse DeleteListing(int listingId, User user);
         ListingResponse PatchListing(int listingId, ListingRequest listingRequest, User user);
         ListingResponse UpdateIsTrashed(int listingId, bool isTrashed);
@@ -23,6 +23,7 @@ namespace Daveslist.Services
         Listing GetById(int id);
         ListingResponse PostReply(int listingId, ReplyRequest model, User user);
         IEnumerable<Reply> GetAllReplies(int listingId, User user);
+        IEnumerable<Listing> GetAllByCategory(Category category);
     }
 
     public class ListingService : IListingService
@@ -34,9 +35,9 @@ namespace Daveslist.Services
             _appSettings = appSettings.Value;
         }
 
-        public ListingResponse PostListing(ListingRequest model, User user)
+        public ListingResponse PostListing(ListingRequest model, Category category, User user)
         {
-            var listing = new Listing(model, user);
+            var listing = new Listing(model, category, user);
             Listing._listings.Add(listing);
 
             return new ListingResponse(listing);
@@ -170,6 +171,13 @@ namespace Daveslist.Services
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
+        }
+
+        public IEnumerable<Listing> GetAllByCategory(Category category)
+        {
+            var listings = Listing._listings.Where(x => x.Category == category);
+
+            return listings;
         }
     }
 }

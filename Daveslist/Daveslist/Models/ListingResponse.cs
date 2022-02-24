@@ -12,7 +12,7 @@ namespace Daveslist.Models
 
         public string Content { get; set; }
 
-        //public int CategoryId { get; set; }
+        public Category Category { get; set; }
 
         public User CreatedBy { get; set; }
 
@@ -28,6 +28,7 @@ namespace Daveslist.Models
             Id = listing.Id;
             Title = listing.Title;
             Content = listing.Content;
+            Category = listing.Category;
             CreatedBy = listing.CreatedBy;
             Replies = listing.Replies;
             IsPublic = listing.IsPublic;

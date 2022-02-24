@@ -17,7 +17,7 @@ namespace Daveslist.Entities
         [StringLength(5000, ErrorMessage = "The {0} value cannot exceed {1} characters.")]
         public string Content { get; set; }
 
-        //public int CategoryId { get; set; }
+        public Category Category { get; set; }
 
         public List<Reply> Replies { get; set; }
 
@@ -37,12 +37,12 @@ namespace Daveslist.Entities
         [JsonIgnore]
         public static List<Listing> _listings { get; set; } = new List<Listing>();
 
-        public Listing(ListingRequest model, User user)
+        public Listing(ListingRequest model, Category category, User user)
         {
             Id = _nextListingId;
             Title = model.Title;
             Content = model.Content;
-            //CategoryId = model.CategorId;
+            Category = category;
             Replies = new List<Reply>();
             IsPublic = model.IsPublic;
             IsTrashed = model.IsTrashed;
