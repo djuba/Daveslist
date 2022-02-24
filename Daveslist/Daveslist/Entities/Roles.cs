@@ -7,8 +7,10 @@ namespace Daveslist.Entities
 {
     public enum Roles
     {
-        Admin,
+        Visitor,
+        RegisteredUser,
         Moderator,
-        RegisteredUser
+        Admin,
+
     }
 }

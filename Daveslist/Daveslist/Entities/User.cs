@@ -1,6 +1,7 @@
 ﻿using Daveslist.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json.Serialization;
 
 namespace Daveslist.Entities
@@ -18,6 +19,9 @@ namespace Daveslist.Entities
         public string Email { get; set; }
 
         public List<Roles> Roles { get; set; }
+
+        [JsonIgnore]
+        public Roles MaxRole => Roles.Any() ? (Roles)Roles.Max(role => (int)role) : Entities.Roles.Visitor;
 
         [JsonIgnore]
         public string Password { get; set; }
