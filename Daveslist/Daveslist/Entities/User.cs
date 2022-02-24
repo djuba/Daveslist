@@ -20,6 +20,8 @@ namespace Daveslist.Entities
 
         public List<Roles> Roles { get; set; }
 
+        public List<Message> Messages { get; set; }
+
         [JsonIgnore]
         public Roles MaxRole => Roles.Any() ? (Roles)Roles.Max(role => (int)role) : Entities.Roles.Visitor;
 
@@ -41,6 +43,7 @@ namespace Daveslist.Entities
             Email = model.Email;
             Password = model.Password;
             Roles = new List<Roles>();
+            Messages = new List<Message>();
 
             _nextUserId++;
         }

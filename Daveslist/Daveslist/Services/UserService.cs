@@ -20,6 +20,7 @@ namespace Daveslist.Services
         void AddRole(User user, Roles role);
         IEnumerable<User> GetAll();
         User GetById(int id);
+        void AddMessage(User user, Message message);
     }
 
     public class UserService : IUserService
@@ -78,6 +79,11 @@ namespace Daveslist.Services
         public User GetById(int id)
         {
             return User._users.FirstOrDefault(x => x.Id == id);
+        }
+
+        public void AddMessage(User user, Message message)
+        {
+            user.Messages.Add(message);
         }
 
         // helper methods
