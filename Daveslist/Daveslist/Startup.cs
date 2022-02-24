@@ -31,6 +31,8 @@ namespace Daveslist
             services.AddCors();
             services.AddControllers();
 
+            services.AddSwaggerGen();
+
             // configure strongly typed settings object
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
 
@@ -46,6 +48,8 @@ namespace Daveslist
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI();
             }
 
             //app.UseHttpsRedirection();
