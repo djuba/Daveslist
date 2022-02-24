@@ -56,7 +56,7 @@ namespace Daveslist.Controllers
         [Authorize(Roles.Admin, Roles.RegisteredUser)]
         [HttpPatch]
         [Route("{listingId:int}")]
-        public IActionResult PatchListing(int listingId, [FromBody] ListingRequest model)
+        public IActionResult PatchListing(int listingId, ListingRequest model)
         {
             var user = (User)HttpContext.Items["User"];
             if (user == null)
@@ -90,6 +90,37 @@ namespace Daveslist.Controllers
             var user = (User)HttpContext.Items["User"] ?? null;
             var listings = _listingService.GetAll(user);
             return Ok(listings);
+        }
+
+        [Authorize(Roles.RegisteredUser)]
+        [HttpPost]
+        [Route("{listingId:int}/replies")]
+        public IActionResult PostReply(int listingId, ReplyRequest model)
+        {
+            var user = (User)HttpContext.Items["User"];
+            if (user == null)
+                return BadRequest(new { message = "User was not logged in" });
+
+            var response = _listingService.PostReply(listingId, model, user);
+
+            if (response == null)
+                return BadRequest(new { message = $"User {user.Id} cannot reply to listing {listingId}" });
+
+            return Ok(response);
+        }
+
+        [Authorize(Roles.Admin, Roles.Moderator, Roles.RegisteredUser)]
+        [HttpGet]
+        [Route("{listingId:int}/replies")]
+        public IActionResult GetAllReplies(int listingId)
+        {
+            var user = (User)HttpContext.Items["User"];
+            if (user == null)
+                return BadRequest(new { message = "User was not logged in" });
+
+            var replies = _listingService.GetAllReplies(listingId, user);
+
+            return Ok(replies);
         }
     }
 }

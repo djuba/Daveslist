@@ -1,5 +1,6 @@
 using Daveslist.Entities;
 using System;
+using System.Collections.Generic;
 
 namespace Daveslist.Models
 {
@@ -15,6 +16,8 @@ namespace Daveslist.Models
 
         public User CreatedBy { get; set; }
 
+        public List<Reply> Replies { get; set; }
+
         public bool IsPublic { get; set; }
 
         public bool IsTrashed { get; set; } = false;
@@ -26,6 +29,7 @@ namespace Daveslist.Models
             Title = listing.Title;
             Content = listing.Content;
             CreatedBy = listing.CreatedBy;
+            Replies = listing.Replies;
             IsPublic = listing.IsPublic;
             IsTrashed = listing.IsTrashed;
         }

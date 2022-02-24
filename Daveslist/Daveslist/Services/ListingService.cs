@@ -21,6 +21,8 @@ namespace Daveslist.Services
         IEnumerable<Listing> GetAll(User user);
         IEnumerable<Listing> GetAllByUser(User user);
         Listing GetById(int id);
+        ListingResponse PostReply(int listingId, ReplyRequest model, User user);
+        IEnumerable<Reply> GetAllReplies(int listingId, User user);
     }
 
     public class ListingService : IListingService
@@ -117,6 +119,40 @@ namespace Daveslist.Services
         public Listing GetById(int id)
         {
             return Listing._listings.FirstOrDefault(x => x.Id == id && x.IsActive);
+        }
+
+        public ListingResponse PostReply(int listingId, ReplyRequest model, User user)
+        {
+            var listing = GetById(listingId);
+
+            if (listing == null)
+                return null;
+
+            var expiration = listing.CreatedOn.AddYears(1);
+
+            if (DateTime.Now > expiration)
+                return null;
+
+            var reply = new Reply(model);
+            listing.Replies.Add(reply);
+
+            return new ListingResponse(listing);
+        }
+
+        public IEnumerable<Reply> GetAllReplies(int listingId, User user)
+        {
+            var listing = GetById(listingId);
+
+            if (listing == null)
+                return null;
+
+            if (user.MaxRole == Roles.RegisteredUser)
+            {
+                if (listing.CreatedBy != user)
+                    return null;
+            }
+
+            return listing.Replies;
         }
 
         // helper methods

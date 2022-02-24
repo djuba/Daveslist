@@ -23,6 +23,8 @@ namespace Daveslist.Entities
 
         public User CreatedBy { get; set; }
 
+        public DateTime CreatedOn { get; set; }
+
         public bool IsPublic { get; set; }
 
         public bool IsActive { get; set; } = true;
@@ -45,6 +47,7 @@ namespace Daveslist.Entities
             IsPublic = model.IsPublic;
             IsTrashed = model.IsTrashed;
             CreatedBy = user;
+            CreatedOn = DateTime.Now;
 
             _nextListingId++;
         }
